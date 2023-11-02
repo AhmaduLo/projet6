@@ -1,11 +1,58 @@
 #contact_modal {
   display: none;
 }
-
+.noneAll {
+  display: block;
+}
+.noneAll.none {
+  display: none;
+}
+/* ----------------------modal photo----------------- */
+.modalPhoto.afficheModalPhoto {
+  position: relative;
+  border: 1px solid red;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+}
+.modalPhoto {
+  display: none;
+}
+.modalPhoto .imgcontainer {
+  border: 1px solid;
+  width: 50%;
+  height: 600px;
+}
+.modalPhoto .imgcontainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modalPhoto ion-icon {
+  font-size: 55px;
+  color: #901c1c;
+  cursor: pointer;
+}
+.modalPhoto .closeModule {
+  position: absolute;
+  right: 100px;
+  top: 55px;
+}
+.modalPhoto h3 {
+  position: absolute;
+  bottom: 1%;
+  left: 15%;
+  color: #901c1c;
+  font-size: 15px;
+}
+/* --------------------------------------- */
 .photograph-header {
   background-color: #fafafa;
   height: 300px;
-  margin: 0 100px;
+  margin: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -116,6 +163,7 @@ section {
   justify-content: center;
   grid-gap: 75px;
 }
+
 section .container {
   width: auto;
   height: auto;
@@ -129,6 +177,8 @@ section .container .img_block img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 5%;
+  cursor: pointer;
 }
 section .container .name_like {
   display: flex;
@@ -150,12 +200,15 @@ section .container .name_like .nmberIcon {
   justify-content: space-between;
   height: 35px;
 }
-section .container .name_like .like{
-   color: red;
-    cursor: pointer;
+section .container .name_like .like {
+  cursor: pointer;
 }
-.like_priceTotal{
-  background-color: #DB8876;
+section .container .name_like .like.color {
+  color: red;
+}
+
+.like_priceTotal {
+  background-color: #db8876;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -168,8 +221,60 @@ section .container .name_like .like{
   padding-right: 20px;
   z-index: 1;
 }
-.like_priceTotal .like_total{
+.like_priceTotal .like_total {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+/* ------------------------css trier*------- */
+.trier {
+  width: 80%;
+  height: auto;
+  margin: auto;
+  display: flex;
+  /* align-items: center; */
+}
+.trier .containtTrie {
+  position: relative;
+  width: 120px;
+  height: 20px;
+  color: rgb(255, 255, 255);
+  font-size: 17px;
+  background-color: #901c1c;
+  border-radius: 5%;
+  margin-left: 25px;
+  padding: 10px;
+  display: grid;
+  grid-gap: 10px;
+  overflow: hidden;
+  transition: all 0.8s;
+}
+.trier .containtTrie.afterclick {
+  height: 140px;
+  transition: all 0.8s;
+}
+.trier .containtTrie .chevron_ouvert {
+  position: absolute;
+  cursor: pointer;
+  left: 80%;
+  top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  transition: all 0.8s;
+}
+.trier .containtTrie .chevron_ouvert.rotate {
+  transform: rotate(180deg);
+  transition: all 0.8s;
+}
+.trier .containtTrie div {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.trier .containtTrie span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: rgb(255, 255, 255);
+  margin-top: 15px;
 }

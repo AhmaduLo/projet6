@@ -32,6 +32,7 @@ function photographerTemplate(data) {
       localStorage.setItem("city", city);
       localStorage.setItem("tagline", tagline);
       localStorage.setItem("picture", picture);
+      localStorage.setItem("price", price);
       window.location.href = "photographer.html";
     });
     return article;
