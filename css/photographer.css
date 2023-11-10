@@ -22,7 +22,6 @@
   display: none;
 }
 .modalPhoto .imgcontainer {
-  border: 1px solid;
   width: 50%;
   height: 600px;
 }
@@ -30,6 +29,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.modalPhoto .imgcontainer .containt_all {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.imgcontainer .containt_all.active {
+  display: block;
+  animation: fade 0.8s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalPhoto .blockVideo {
+  width: 50%;
+  height: 600px;
 }
 .modalPhoto ion-icon {
   font-size: 55px;
@@ -151,6 +175,10 @@ form input {
   height: 68px;
   border: none;
   border-radius: 5px;
+  font-size: 30px;
+}
+form textarea{
+  font-size: 30px;
 }
 section {
   width: 80%;

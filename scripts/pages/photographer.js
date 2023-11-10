@@ -9,9 +9,12 @@ const imageDisplayClick = document.getElementsByClassName("imageDisplay");
 const noneAll = document.querySelector(".noneAll");
 const closeModule = document.getElementsByClassName("closeModule");
 const modalPhoto = document.querySelector(".modalPhoto");
+const imgcontainer = document.querySelector(".imgcontainer");
 const chevronplus = document.getElementsByClassName("chevronplus");
 const chevronmoins = document.getElementsByClassName("chevronmoins");
 const imgToSlide = document.getElementsByClassName("imgToSlide");
+const ItemeTitle = document.getElementsByClassName("ItemeTitle");
+const containt_all = document.getElementsByClassName("containt_all");
 const photoSlide = [];
 
 let somme = 0;
@@ -162,44 +165,63 @@ async function getPhotographers() {
       photoSlide.push(element);
       //--------------click sur photo------------------
       for (let i = 0; i < imageDisplayClick.length; i++) {
+        let cont = 0;
         let sourceImg = "";
+
         let sourcevideo = "";
         imageDisplayClick[i].addEventListener("click", (e) => {
-          //console.log(e.srcElement.children[0].alt);
           photoSlide.forEach((iteme) => {
-            console.log(photoSlide);
-            if (iteme.image === e.target.alt) {
-              if (iteme.image) {
-                sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
-              }
-              if (iteme.video) {
-                sourcevideo = `assets/albumPhoto/${firstName}/${iteme.video}`;
-              }
-              noneAll.classList.add("none");
-              modalPhoto.classList.add("afficheModalPhoto");
-              modalPhoto.innerHTML += `
-            <ion-icon class="closeModule" name="close-outline"></ion-icon>
-            <ion-icon class="chevronmoins" name="chevron-back-outline"></ion-icon>
-            <div class="imgcontainer"><img class="imgToSlide" src="${sourceImg}" alt="${e.target.alt}"></div> 
-           <ion-icon class="chevronplus" name="chevron-forward-outline"></ion-icon>
-            <h3>${iteme.title}</h3>
-
-          `;
+            if (iteme.image) {
+              sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
+              // if (sourceImg === e.target.alt) {
+              //   console.log(sourceImg);
+              // }
+              imgcontainer.innerHTML += ` 
+              <div class="containt_all">          
+              <img class="imgToSlide" src="${sourceImg}" alt="${e.target.alt}">            
+              <h3 class="ItemeTitle">${iteme.title}</h3>  
+              </div> 
+              `;
+            } else if (iteme.video) {
+              sourcevideo = `assets/albumPhoto/${firstName}/${iteme.video}`;
+              imgcontainer.innerHTML += `
+            <div class="containt_all">
+            <video class="imageDisplay" controls width="100%" height="100% id="videoPlayer">
+            <source src="${sourcevideo}"type="video/mp4" /></video>
+            <h3 class="ItemeTitle">${iteme.title}</h3>
+            </div>
+            `;
             }
-           
           });
-          
+          //----------------slide >----------------------
           chevronplus[0].addEventListener("click", () => {
-            console.log("plus");
+            containt_all[cont].classList.remove("active");
+            if (cont < containt_all.length - 1) {
+              cont++;
+            } else {
+              cont = 0;
+            }
+            containt_all[cont].classList.add("active");
           });
+          //----------------slide <----------------------
           chevronmoins[0].addEventListener("click", () => {
-            console.log("moins");
+            containt_all[cont].classList.remove("active");
+            if (cont > 0) {
+              cont--;
+            } else {
+              cont = containt_all.length - 1;
+            }
+            containt_all[cont].classList.add("active");
           });
+          //----------------open module---------------------
+          noneAll.classList.add("none");
+          modalPhoto.classList.add("afficheModalPhoto");
           //--------------close module photo------------------
           closeModule[0].addEventListener("click", () => {
             noneAll.classList.remove("none");
             modalPhoto.classList.remove("afficheModalPhoto");
             modalPhoto.innerHTML = "";
+            location.reload();
           });
         });
       }

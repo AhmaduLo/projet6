@@ -11,9 +11,12 @@ var imageDisplayClick = document.getElementsByClassName("imageDisplay");
 var noneAll = document.querySelector(".noneAll");
 var closeModule = document.getElementsByClassName("closeModule");
 var modalPhoto = document.querySelector(".modalPhoto");
+var imgcontainer = document.querySelector(".imgcontainer");
 var chevronplus = document.getElementsByClassName("chevronplus");
 var chevronmoins = document.getElementsByClassName("chevronmoins");
 var imgToSlide = document.getElementsByClassName("imgToSlide");
+var ItemeTitle = document.getElementsByClassName("ItemeTitle");
+var containt_all = document.getElementsByClassName("containt_all");
 var photoSlide = [];
 var somme = 0;
 var totalLikes = 0;
@@ -165,39 +168,56 @@ function getPhotographers() {
                 photoSlide.push(element); //--------------click sur photo------------------
 
                 var _loop2 = function _loop2(_i2) {
+                  var cont = 0;
                   var sourceImg = "";
                   var sourcevideo = "";
 
                   imageDisplayClick[_i2].addEventListener("click", function (e) {
-                    //console.log(e.srcElement.children[0].alt);
                     photoSlide.forEach(function (iteme) {
-                      console.log(photoSlide);
+                      if (iteme.image) {
+                        sourceImg = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.image); // if (sourceImg === e.target.alt) {
+                        //   console.log(sourceImg);
+                        // }
 
-                      if (iteme.image === e.target.alt) {
-                        if (iteme.image) {
-                          sourceImg = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.image);
-                        }
-
-                        if (iteme.video) {
-                          sourcevideo = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.video);
-                        }
-
-                        noneAll.classList.add("none");
-                        modalPhoto.classList.add("afficheModalPhoto");
-                        modalPhoto.innerHTML += "\n            <ion-icon class=\"closeModule\" name=\"close-outline\"></ion-icon>\n            <ion-icon class=\"chevronmoins\" name=\"chevron-back-outline\"></ion-icon>\n            <div class=\"imgcontainer\"><img class=\"imgToSlide\" src=\"".concat(sourceImg, "\" alt=\"").concat(e.target.alt, "\"></div> \n           <ion-icon class=\"chevronplus\" name=\"chevron-forward-outline\"></ion-icon>\n            <h3>").concat(iteme.title, "</h3>\n\n          ");
+                        imgcontainer.innerHTML += " \n              <div class=\"containt_all\">          \n              <img class=\"imgToSlide\" src=\"".concat(sourceImg, "\" alt=\"").concat(e.target.alt, "\">            \n              <h3 class=\"ItemeTitle\">").concat(iteme.title, "</h3>  \n              </div> \n              ");
+                      } else if (iteme.video) {
+                        sourcevideo = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.video);
+                        imgcontainer.innerHTML += "\n            <div class=\"containt_all\">\n            <video class=\"imageDisplay\" controls width=\"100%\" height=\"100% id=\"videoPlayer\">\n            <source src=\"".concat(sourcevideo, "\"type=\"video/mp4\" /></video>\n            <h3 class=\"ItemeTitle\">").concat(iteme.title, "</h3>\n            </div>\n            ");
                       }
-                    });
+                    }); //----------------slide >----------------------
+
                     chevronplus[0].addEventListener("click", function () {
-                      console.log("plus");
-                    });
+                      containt_all[cont].classList.remove("active");
+
+                      if (cont < containt_all.length - 1) {
+                        cont++;
+                      } else {
+                        cont = 0;
+                      }
+
+                      containt_all[cont].classList.add("active");
+                    }); //----------------slide <----------------------
+
                     chevronmoins[0].addEventListener("click", function () {
-                      console.log("moins");
-                    }); //--------------close module photo------------------
+                      containt_all[cont].classList.remove("active");
+
+                      if (cont > 0) {
+                        cont--;
+                      } else {
+                        cont = containt_all.length - 1;
+                      }
+
+                      containt_all[cont].classList.add("active");
+                    }); //----------------open module---------------------
+
+                    noneAll.classList.add("none");
+                    modalPhoto.classList.add("afficheModalPhoto"); //--------------close module photo------------------
 
                     closeModule[0].addEventListener("click", function () {
                       noneAll.classList.remove("none");
                       modalPhoto.classList.remove("afficheModalPhoto");
                       modalPhoto.innerHTML = "";
+                      location.reload();
                     });
                   });
                 };
