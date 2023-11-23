@@ -1,22 +1,30 @@
+const modal = document.getElementById("contact_modal");
+
 function displayModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "block";
 }
 
 function closeModal() {
-  const modal = document.getElementById("contact_modal");
   modal.style.display = "none";
 }
 
 const myForm = document.querySelector(".myForm");
-const prenom = document.getElementById("prenom");
-const nom = document.getElementById("nom");
-const email = document.getElementById("email");
 const message = document.getElementById("message");
-myForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  console.log("Prenom = " + prenom.value);
-  console.log("Nom = " + nom.value);
-  console.log("Email = " + email.value);
-  console.log("Message = " + message.value);
-});
+const inputs = document.querySelectorAll("input");
+
+function submite() {
+  myForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    inputs.forEach((iteme) => {
+      if (iteme.value == "") {
+        console.log("les champs son vide");
+      } else {
+        console.log(iteme.value);
+        console.log(message.value);
+        modal.style.display = "none";
+      }
+    });
+  });
+}
+submite();

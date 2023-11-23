@@ -15,6 +15,9 @@ const chevronmoins = document.getElementsByClassName("chevronmoins");
 const imgToSlide = document.getElementsByClassName("imgToSlide");
 const ItemeTitle = document.getElementsByClassName("ItemeTitle");
 const containt_all = document.getElementsByClassName("containt_all");
+const containerBox = document.getElementsByName("container");
+const elementTexteClique = document.getElementsByName("elementTexteClique");
+const containerTrier = document.querySelector(".containerTrier");
 const photoSlide = [];
 
 let somme = 0;
@@ -52,14 +55,84 @@ async function getPhotographers() {
   );
 
   //-------------tableau des element a trier-----
-  let ArrayTries = [{ name: "Populaire" }, { name: "Date" }, { name: "Titre" }];
-  //console.log(ArrayTries);
+  let ArrayTries = [];
+  ArrayTries = [{ name: "Populaire" }, { name: "Date" }, { name: "Titre" }];
   ArrayTries.forEach((item) => {
-    containtTrie.innerHTML += `
+    containerTrier.innerHTML += ` 
     <div class="elementTexteClique">${item.name} </div>
     <span></span>
     `;
   });
+
+  //---------- Add click event listener to each element---populaire-----
+  function addClickEventListeners() {
+    const elementTexteClique = document.querySelectorAll(".elementTexteClique");
+
+    elementTexteClique.forEach((element, index) => {
+      element.addEventListener("click", (e) => {
+        handleItemClick(e, index);
+      });
+    });
+  }
+  function handleItemClick(e, index) {
+    // Échangez l'élément cliqué avec celui à l'index 0 dans le tableau ArrayTries
+    const clickedItem = ArrayTries[index];
+    ArrayTries[index] = ArrayTries[0];
+    ArrayTries[0] = clickedItem;
+    // Réinitialisez le contenu de containerTrier
+    containerTrier.innerHTML = "";
+    // Mise à jour du tableau ArrayTries
+    const newArrayTries = ArrayTries.map((item) => ({ name: item.name }));
+    ArrayTries = newArrayTries;
+    // Affichez les éléments dans containerTrier
+    ArrayTries.forEach((item) => {
+      containerTrier.innerHTML += `
+             <div class="elementTexteClique">${item.name}</div>
+             <span></span>
+         `;
+    });
+    // Ajouter à nouveau les gestionnaires d'événements après la mise à jour
+    addClickEventListeners();
+    //--------------------------------------------------------
+    const photos = Array.from(section.getElementsByClassName("container"));
+
+    if (e.target.textContent == "Populaire") {
+      // Triez les photos en fonction du nombre de likes
+      photos.sort(function (a, b) {
+        const likesA = parseInt(a.getAttribute("data-likes"));
+        const likesB = parseInt(b.getAttribute("data-likes"));
+        return likesB - likesA; // Triez de manière décroissante
+      });
+    } else if (e.target.textContent == "Date") {
+      photos.sort(function (a, b) {
+        const dateA = parseInt(a.getAttribute("data-date"));
+        const dateB = parseInt(b.getAttribute("data-date"));
+        return dateB - dateA; // Triez de manière décroissante
+      });
+    } else {
+      photos.sort(function (a, b) {
+        const titleA = a.querySelector(".title").textContent;
+        const titleB = b.querySelector(".title").textContent;
+        return titleA.localeCompare(titleB); // Triez de manière alphabétique
+      });
+    }
+    // Supprimez toutes les photos du conteneur
+    section.innerHTML = "";
+    // Ajoutez les photos triées au conteneur
+    photos.forEach(function (photo) {
+      section.appendChild(photo);
+      //console.log(photo.children[1].children[1].children[1]);
+      //--------------click du like----------------
+      for (let i = 0; i < likeIcons.length; i++) {
+        likeIcons[i].addEventListener("click", (e) => {
+            likeIcons[i].classList.add("color");
+            console.log(e);
+        });
+      }
+    });
+  }
+  addClickEventListeners();
+  //------------chevron du trie--------------------
   chevron_ouvert[0].addEventListener("click", () => {
     containtTrie.classList.toggle("afterclick");
     chevron_ouvert[0].classList.toggle("rotate");
@@ -117,6 +190,7 @@ async function getPhotographers() {
       //------------------------------------
 
       //--------addition des likes--------------
+
       Thelikes.push(element.likes);
       let somme = 0;
       for (let i = 0; i < Thelikes.length; i++) {
@@ -124,16 +198,15 @@ async function getPhotographers() {
       }
 
       section.innerHTML += `
-      <div class="container">
+      <div class="container" data-likes=${element.likes} data-date=${element.date}>
       <div class="img_block">
       ${imageElement}
       ${videoElement}
       </div>
       <div class="name_like">
       <div class="h3">
-      <h3>${element.title}</h3>
+      <h3 class="title">${element.title}</h3> 
       </div>
-
       <div class="nmberIcon">
       <p class="paraNumbIcon">${element.likes}</p>
       <ion-icon class="like" name="heart"></ion-icon>
@@ -167,32 +240,45 @@ async function getPhotographers() {
       for (let i = 0; i < imageDisplayClick.length; i++) {
         let cont = 0;
         let sourceImg = "";
-
+        var maPropreKey = 0;
         let sourcevideo = "";
         imageDisplayClick[i].addEventListener("click", (e) => {
           photoSlide.forEach((iteme) => {
+            if (iteme.image === e.target.alt) {
+              const imgNone = document.getElementsByClassName("imgNone");
+              cont = containt_all.length + 0;
+              console.log(cont);
+              if (iteme.image) {
+                sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
+                imgcontainer.innerHTML += `  
+                               
+                <img class="imgNone" src="${sourceImg}" alt="${e.target.alt}">            
+                <h3 class="ItemeTitle">${iteme.title}</h3>   
+                      
+                `;
+              }
+            }
+
             if (iteme.image) {
               sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
-              // if (sourceImg === e.target.alt) {
-              //   console.log(sourceImg);
-              // }
-              imgcontainer.innerHTML += ` 
-              <div class="containt_all">          
-              <img class="imgToSlide" src="${sourceImg}" alt="${e.target.alt}">            
-              <h3 class="ItemeTitle">${iteme.title}</h3>  
-              </div> 
-              `;
+              imgcontainer.innerHTML += `
+                <div class="containt_all">
+                <img class="imgToSlide" src="${sourceImg}" alt="${e.target.alt}">
+                <h3 class="ItemeTitle">${iteme.title}</h3>
+                </div>
+                `;
             } else if (iteme.video) {
               sourcevideo = `assets/albumPhoto/${firstName}/${iteme.video}`;
               imgcontainer.innerHTML += `
-            <div class="containt_all">
-            <video class="imageDisplay" controls width="100%" height="100% id="videoPlayer">
-            <source src="${sourcevideo}"type="video/mp4" /></video>
-            <h3 class="ItemeTitle">${iteme.title}</h3>
-            </div>
-            `;
+              <div class="containt_all">
+              <video class="imageDisplay" controls width="100%" height="100% id="videoPlayer">
+              <source src="${sourcevideo}"type="video/mp4" /></video>
+              <h3 class="ItemeTitle">${iteme.title}</h3>
+              </div>
+              `;
             }
           });
+
           //----------------slide >----------------------
           chevronplus[0].addEventListener("click", () => {
             containt_all[cont].classList.remove("active");
@@ -202,17 +288,39 @@ async function getPhotographers() {
               cont = 0;
             }
             containt_all[cont].classList.add("active");
+            //console.log(containt_all);
           });
-          //----------------slide <----------------------
-          chevronmoins[0].addEventListener("click", () => {
-            containt_all[cont].classList.remove("active");
-            if (cont > 0) {
-              cont--;
-            } else {
-              cont = containt_all.length - 1;
+          //  //----------------slide <----------------------
+          //  chevronmoins[0].addEventListener("click", () => {
+          //   containt_all[cont].classList.remove("active");
+          //   if (cont > 0) {
+          //     cont--;
+          //   } else {
+          //     cont = containt_all.length - 1;
+          //   }
+          //   containt_all[cont].classList.add("active");
+          // });
+          //----------------click avec fleche-----------------------
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight") {
+              containt_all[cont].classList.remove("active");
+              if (cont < containt_all.length - 1) {
+                cont++;
+              } else {
+                cont = 0;
+              }
+              containt_all[cont].classList.add("active");
+            } else if (event.key === "ArrowLeft") {
+              containt_all[cont].classList.remove("active");
+              if (cont > 0) {
+                cont--;
+              } else {
+                cont = containt_all.length - 1;
+              }
+              containt_all[cont].classList.add("active");
             }
-            containt_all[cont].classList.add("active");
           });
+
           //----------------open module---------------------
           noneAll.classList.add("none");
           modalPhoto.classList.add("afficheModalPhoto");

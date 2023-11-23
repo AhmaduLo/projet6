@@ -126,13 +126,14 @@
 .modal {
   border-radius: 5px;
   background-color: #db8876;
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 35px;
   margin: auto;
+  margin-bottom: 95px;
 }
 
 .modal header {
@@ -145,14 +146,14 @@
 }
 
 .modal header h2 {
-  font-size: 64px;
+  font-size: 54px;
   font-weight: normal;
   text-align: center;
 }
 
 form {
   display: flex;
-  width: 100%;
+  width: 90%;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -177,7 +178,7 @@ form input {
   border-radius: 5px;
   font-size: 30px;
 }
-form textarea{
+form textarea {
   font-size: 30px;
 }
 section {
@@ -277,6 +278,18 @@ section .container .name_like .like.color {
   overflow: hidden;
   transition: all 0.8s;
 }
+.trier .containtTrie .containerTrier{
+  color: rgb(255, 255, 255);
+  font-size: 17px;
+  background-color: #901c1c;
+  border-radius: 5%;
+  margin-left: 2px;
+  display: grid;
+  grid-gap: 10px;
+  overflow: hidden;
+  transition: all 0.8s;
+  
+} 
 .trier .containtTrie.afterclick {
   height: 140px;
   transition: all 0.8s;
@@ -296,7 +309,6 @@ section .container .name_like .like.color {
 }
 .trier .containtTrie div {
   display: flex;
-  justify-content: space-between;
   cursor: pointer;
 }
 .trier .containtTrie span {
