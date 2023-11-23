@@ -12,6 +12,7 @@ var noneAll = document.querySelector(".noneAll");
 var closeModule = document.getElementsByClassName("closeModule");
 var modalPhoto = document.querySelector(".modalPhoto");
 var imgcontainer = document.querySelector(".imgcontainer");
+var imgcontainer1None = document.querySelector(".imgcontainer1None");
 var chevronplus = document.getElementsByClassName("chevronplus");
 var chevronmoins = document.getElementsByClassName("chevronmoins");
 var imgToSlide = document.getElementsByClassName("imgToSlide");
@@ -20,6 +21,7 @@ var containt_all = document.getElementsByClassName("containt_all");
 var containerBox = document.getElementsByName("container");
 var elementTexteClique = document.getElementsByName("elementTexteClique");
 var containerTrier = document.querySelector(".containerTrier");
+var imgNone = document.getElementsByClassName("imgNone");
 var photoSlide = [];
 var somme = 0;
 var totalLikes = 0;
@@ -256,13 +258,17 @@ function getPhotographers() {
                   imageDisplayClick[_i2].addEventListener("click", function (e) {
                     photoSlide.forEach(function (iteme) {
                       if (iteme.image === e.target.alt) {
-                        var imgNone = document.getElementsByClassName("imgNone");
+                        var _imgNone = document.getElementsByClassName("imgNone");
+
                         cont = containt_all.length + 0;
-                        console.log(cont);
+                        imgcontainer.style.display = "none";
 
                         if (iteme.image) {
                           sourceImg = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.image);
-                          imgcontainer.innerHTML += "  \n                               \n                <img class=\"imgNone\" src=\"".concat(sourceImg, "\" alt=\"").concat(e.target.alt, "\">            \n                <h3 class=\"ItemeTitle\">").concat(iteme.title, "</h3>   \n                      \n                ");
+                          imgcontainer1None.innerHTML += "                               \n                <img id=\"imgNone\"  src=\"".concat(sourceImg, "\" alt=\"").concat(e.target.alt, "\">            \n                <h3 class=\"ItemeTitle\">").concat(iteme.title, "</h3>                        \n                ");
+                        } else if (iteme.video) {
+                          sourcevideo = "assets/albumPhoto/".concat(firstName, "/").concat(iteme.video);
+                          imgcontainer1None.innerHTML += "                               \n                <video class=\"imageDisplay\" controls width=\"100%\" height=\"100% id=\"videoPlayer\">\n                <source src=\"".concat(sourcevideo, "\"type=\"video/mp4\" /></video>          \n                <h3 class=\"ItemeTitle\">").concat(iteme.title, "</h3>                        \n                ");
                         }
                       }
 
@@ -276,6 +282,8 @@ function getPhotographers() {
                     }); //----------------slide >----------------------
 
                     chevronplus[0].addEventListener("click", function () {
+                      imgcontainer1None.style.display = "none";
+                      imgcontainer.style.display = "block";
                       containt_all[cont].classList.remove("active");
 
                       if (cont < containt_all.length - 1) {
@@ -286,16 +294,18 @@ function getPhotographers() {
 
                       containt_all[cont].classList.add("active"); //console.log(containt_all);
                     }); //  //----------------slide <----------------------
-                    //  chevronmoins[0].addEventListener("click", () => {
-                    //   containt_all[cont].classList.remove("active");
-                    //   if (cont > 0) {
-                    //     cont--;
-                    //   } else {
-                    //     cont = containt_all.length - 1;
-                    //   }
-                    //   containt_all[cont].classList.add("active");
-                    // });
-                    //----------------click avec fleche-----------------------
+
+                    chevronmoins[0].addEventListener("click", function () {
+                      containt_all[cont].classList.remove("active");
+
+                      if (cont > 0) {
+                        cont--;
+                      } else {
+                        cont = containt_all.length - 1;
+                      }
+
+                      containt_all[cont].classList.add("active");
+                    }); //----------------click avec fleche-----------------------
 
                     document.addEventListener("keydown", function (event) {
                       if (event.key === "ArrowRight") {

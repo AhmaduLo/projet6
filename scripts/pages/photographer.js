@@ -10,6 +10,7 @@ const noneAll = document.querySelector(".noneAll");
 const closeModule = document.getElementsByClassName("closeModule");
 const modalPhoto = document.querySelector(".modalPhoto");
 const imgcontainer = document.querySelector(".imgcontainer");
+const imgcontainer1None = document.querySelector(".imgcontainer1None");
 const chevronplus = document.getElementsByClassName("chevronplus");
 const chevronmoins = document.getElementsByClassName("chevronmoins");
 const imgToSlide = document.getElementsByClassName("imgToSlide");
@@ -18,6 +19,7 @@ const containt_all = document.getElementsByClassName("containt_all");
 const containerBox = document.getElementsByName("container");
 const elementTexteClique = document.getElementsByName("elementTexteClique");
 const containerTrier = document.querySelector(".containerTrier");
+const imgNone = document.getElementsByClassName("imgNone");
 const photoSlide = [];
 
 let somme = 0;
@@ -125,8 +127,8 @@ async function getPhotographers() {
       //--------------click du like----------------
       for (let i = 0; i < likeIcons.length; i++) {
         likeIcons[i].addEventListener("click", (e) => {
-            likeIcons[i].classList.add("color");
-            console.log(e);
+          likeIcons[i].classList.add("color");
+          console.log(e);
         });
       }
     });
@@ -247,18 +249,22 @@ async function getPhotographers() {
             if (iteme.image === e.target.alt) {
               const imgNone = document.getElementsByClassName("imgNone");
               cont = containt_all.length + 0;
-              console.log(cont);
+              imgcontainer.style.display = "none";
               if (iteme.image) {
                 sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
-                imgcontainer.innerHTML += `  
-                               
-                <img class="imgNone" src="${sourceImg}" alt="${e.target.alt}">            
-                <h3 class="ItemeTitle">${iteme.title}</h3>   
-                      
+                imgcontainer1None.innerHTML += `                               
+                <img id="imgNone"  src="${sourceImg}" alt="${e.target.alt}">            
+                <h3 class="ItemeTitle">${iteme.title}</h3>                        
+                `;
+              } else if (iteme.video) {
+                sourcevideo = `assets/albumPhoto/${firstName}/${iteme.video}`;
+                imgcontainer1None.innerHTML += `                               
+                <video class="imageDisplay" controls width="100%" height="100% id="videoPlayer">
+                <source src="${sourcevideo}"type="video/mp4" /></video>          
+                <h3 class="ItemeTitle">${iteme.title}</h3>                        
                 `;
               }
             }
-
             if (iteme.image) {
               sourceImg = `assets/albumPhoto/${firstName}/${iteme.image}`;
               imgcontainer.innerHTML += `
@@ -281,6 +287,8 @@ async function getPhotographers() {
 
           //----------------slide >----------------------
           chevronplus[0].addEventListener("click", () => {
+            imgcontainer1None.style.display = "none";
+            imgcontainer.style.display = "block";
             containt_all[cont].classList.remove("active");
             if (cont < containt_all.length - 1) {
               cont++;
@@ -291,15 +299,15 @@ async function getPhotographers() {
             //console.log(containt_all);
           });
           //  //----------------slide <----------------------
-          //  chevronmoins[0].addEventListener("click", () => {
-          //   containt_all[cont].classList.remove("active");
-          //   if (cont > 0) {
-          //     cont--;
-          //   } else {
-          //     cont = containt_all.length - 1;
-          //   }
-          //   containt_all[cont].classList.add("active");
-          // });
+          chevronmoins[0].addEventListener("click", () => {
+            containt_all[cont].classList.remove("active");
+            if (cont > 0) {
+              cont--;
+            } else {
+              cont = containt_all.length - 1;
+            }
+            containt_all[cont].classList.add("active");
+          });
           //----------------click avec fleche-----------------------
           document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowRight") {

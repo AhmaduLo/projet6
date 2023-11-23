@@ -25,7 +25,16 @@
   width: 50%;
   height: 600px;
 }
+.modalPhoto .imgcontainer1None {
+  width: 50%;
+  height: 600px;
+}
 .modalPhoto .imgcontainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modalPhoto .imgcontainer1None img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -36,12 +45,21 @@
   object-fit: cover;
   display: none;
 }
+.modalPhoto .imgcontainer1None .containt_all {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
 
 .imgcontainer .containt_all.active {
   display: block;
   animation: fade 0.8s;
 }
-
+.imgcontainer1None .containt_all.active {
+  display: block;
+  animation: fade 0.8s;
+}
 @keyframes fade {
   from {
     opacity: 0;
