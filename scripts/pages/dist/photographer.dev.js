@@ -27,11 +27,71 @@ var somme = 0;
 var totalLikes = 0;
 
 function getPhotographers() {
-  var response, data, media, displayId, userID, picture, name, city, country, tagline, price, Thelikes, containtTrie, chevron_ouvert, elementTexteClique, ArrayTries, addClickEventListeners, handleItemClick, i;
+  var response, data, media, displayId, userID, picture, name, city, country, tagline, price, Thelikes, containtTrie, chevron_ouvert, elementTexteClique, ArrayTries, addClickEventListeners, handleItemClick, i, navigeWithKeyBoard;
   return regeneratorRuntime.async(function getPhotographers$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
+          navigeWithKeyBoard = function _ref3() {
+            var currentIndex = 0;
+            document.addEventListener("keydown", function (event) {
+              var boxes = section.children;
+              var containers = document.querySelectorAll(".container");
+
+              switch (event.key) {
+                case "ArrowUp":
+                  navigate(-2);
+                  break;
+
+                case "ArrowDown":
+                  navigate(2);
+                  break;
+
+                case "ArrowLeft":
+                  navigate(-1);
+                  break;
+
+                case "ArrowRight":
+                  navigate(1);
+                  break;
+
+                case "Enter":
+                  clickAtiveContainer();
+                  break;
+              }
+
+              function navigate(direction) {
+                currentIndex += direction; // Assurez-vous que l'index reste dans les limites des articles
+
+                currentIndex = Math.max(0, Math.min(currentIndex, containers.length - 1)); //Supprimer toute classe « active » existante
+
+                containers.forEach(function (container, index) {
+                  container.classList.remove("active");
+
+                  if (index === currentIndex) {
+                    // Ajouter une classe 'active' à l'article actuel
+                    container.classList.add("active"); // Faire défiler la page pour rendre le conteneur actif visible
+
+                    container.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center"
+                    });
+                  }
+                });
+              }
+
+              function clickAtiveContainer() {
+                // Simuler un clic sur l'article actif
+                var activeContainer = containers[currentIndex];
+
+                if (activeContainer) {
+                  var clickimg = activeContainer.children[0].children[0].children[0];
+                  clickimg.click();
+                }
+              }
+            });
+          };
+
           handleItemClick = function _ref2(e, index) {
             // Échangez l'élément cliqué avec celui à l'index 0 dans le tableau ArrayTries
             var clickedItem = ArrayTries[index];
@@ -105,24 +165,24 @@ function getPhotographers() {
             });
           };
 
-          _context.next = 4;
+          _context.next = 5;
           return regeneratorRuntime.awrap(fetch("http://127.0.0.1:5501/data/photographers.json"));
 
-        case 4:
+        case 5:
           response = _context.sent;
 
           if (response.ok) {
-            _context.next = 7;
+            _context.next = 8;
             break;
           }
 
           throw new Error("Erreur lors de la récupération des photographes");
 
-        case 7:
-          _context.next = 9;
+        case 8:
+          _context.next = 10;
           return regeneratorRuntime.awrap(response.json());
 
-        case 9:
+        case 10:
           data = _context.sent;
           media = data.media;
           displayId = []; // Récupérer l'ID depuis le localStorage
@@ -292,7 +352,7 @@ function getPhotographers() {
                         cont = 0;
                       }
 
-                      containt_all[cont].classList.add("active"); //console.log(containt_all);
+                      containt_all[cont].classList.add("active");
                     }); //  //----------------slide <----------------------
 
                     chevronmoins[0].addEventListener("click", function () {
@@ -309,6 +369,8 @@ function getPhotographers() {
 
                     document.addEventListener("keydown", function (event) {
                       if (event.key === "ArrowRight") {
+                        imgcontainer1None.style.display = "none";
+                        imgcontainer.style.display = "block";
                         containt_all[cont].classList.remove("active");
 
                         if (cont < containt_all.length - 1) {
@@ -328,6 +390,8 @@ function getPhotographers() {
                         }
 
                         containt_all[cont].classList.add("active");
+                      } else if (event.key === "Enter") {
+                        closeModule[0].click();
                       }
                     }); //----------------open module---------------------
 
@@ -355,8 +419,9 @@ function getPhotographers() {
           }
 
           like_priceTotal.innerHTML += "\n  <div class=\"like_total\">\n      <p class=\"likeTotalPara\">".concat(somme, "</p>\n      <ion-icon name=\"heart\"></ion-icon>\n      </div>\n      <div class=\"prise_jour\">\n        <div class=\"prise\">").concat(price, "\xA3/ jour</div>\n      </div>\n  ");
+          navigeWithKeyBoard();
 
-        case 33:
+        case 35:
         case "end":
           return _context.stop();
       }

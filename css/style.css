@@ -37,11 +37,17 @@ h1 {
   align-items: center;
   flex-direction: column;
 }
+.articleContainer.active {
+  border: 2px solid rgb(255, 255, 255); /* the active article */
+  width: 90%;
+  overflow: hidden;
+  border-radius: 5%;
+  box-shadow: 0px 0px 10px 5px rgb(177, 177, 177);
+}
 
 .photographer_section article h2 {
   color: #d3573c;
   font-size: 25px;
-  cursor: pointer;
 }
 .photographer_section article h3 {
   color: #d3573c;

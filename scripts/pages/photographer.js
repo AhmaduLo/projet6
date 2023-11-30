@@ -20,8 +20,8 @@ const containerBox = document.getElementsByName("container");
 const elementTexteClique = document.getElementsByName("elementTexteClique");
 const containerTrier = document.querySelector(".containerTrier");
 const imgNone = document.getElementsByClassName("imgNone");
-const photoSlide = [];
 
+const photoSlide = [];
 let somme = 0;
 let totalLikes = 0;
 async function getPhotographers() {
@@ -296,7 +296,6 @@ async function getPhotographers() {
               cont = 0;
             }
             containt_all[cont].classList.add("active");
-            //console.log(containt_all);
           });
           //  //----------------slide <----------------------
           chevronmoins[0].addEventListener("click", () => {
@@ -311,6 +310,8 @@ async function getPhotographers() {
           //----------------click avec fleche-----------------------
           document.addEventListener("keydown", (event) => {
             if (event.key === "ArrowRight") {
+              imgcontainer1None.style.display = "none";
+              imgcontainer.style.display = "block";
               containt_all[cont].classList.remove("active");
               if (cont < containt_all.length - 1) {
                 cont++;
@@ -326,6 +327,8 @@ async function getPhotographers() {
                 cont = containt_all.length - 1;
               }
               containt_all[cont].classList.add("active");
+            } else if (event.key === "Enter") {
+              closeModule[0].click();
             }
           });
 
@@ -355,6 +358,58 @@ async function getPhotographers() {
         <div class="prise">${price}£/ jour</div>
       </div>
   `;
+
+  function navigeWithKeyBoard() {
+    let currentIndex = 0;
+    document.addEventListener("keydown", (event) => {
+      const boxes = section.children;
+      const containers = document.querySelectorAll(".container");
+      switch (event.key) {
+        case "ArrowUp":
+          navigate(-2);
+          break;
+        case "ArrowDown":
+          navigate(2);
+          break;
+        case "ArrowLeft":
+          navigate(-1);
+          break;
+        case "ArrowRight":
+          navigate(1);
+          break;
+        case "Enter":
+          clickAtiveContainer();
+          break;
+      }
+      function navigate(direction) {
+        currentIndex += direction;
+        // Assurez-vous que l'index reste dans les limites des articles
+        currentIndex = Math.max(
+          0,
+          Math.min(currentIndex, containers.length - 1)
+        );
+        //Supprimer toute classe « active » existante
+        containers.forEach((container, index) => {
+          container.classList.remove("active");
+          if (index === currentIndex) {
+            // Ajouter une classe 'active' à l'article actuel
+            container.classList.add("active");
+            // Faire défiler la page pour rendre le conteneur actif visible
+            container.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+      }
+      function clickAtiveContainer() {
+        // Simuler un clic sur l'article actif
+        const activeContainer = containers[currentIndex];
+        if (activeContainer) {
+          const clickimg = activeContainer.children[0].children[0].children[0];
+          clickimg.click();
+        }
+      }
+    });
+  }
+  navigeWithKeyBoard();
 }
 
 getPhotographers();
