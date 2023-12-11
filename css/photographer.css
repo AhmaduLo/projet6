@@ -209,12 +209,13 @@ section {
   justify-content: center;
   grid-gap: 75px;
 }
-section .container.active {
-  width: 100%;
+.activeTwo {
+  border: 2px solid rgb(0, 255, 136);
+  width: auto;
   overflow: hidden;
   border-radius: 5%;
-  box-shadow:  10px 30px 10px 10px rgb(177, 177, 177);
-  transition: 0.5s ease-in-out;
+  box-shadow: 0px 0px 10px 5px rgb(177, 177, 177);
+  border: 1px solid red;
 }
 
 section .container {
@@ -303,7 +304,7 @@ section .container .name_like .like.color {
   overflow: hidden;
   transition: all 0.8s;
 }
-.trier .containtTrie .containerTrier{
+.trier .containtTrie .containerTrier {
   color: rgb(255, 255, 255);
   font-size: 17px;
   background-color: #901c1c;
@@ -313,8 +314,7 @@ section .container .name_like .like.color {
   grid-gap: 10px;
   overflow: hidden;
   transition: all 0.8s;
-  
-} 
+}
 .trier .containtTrie.afterclick {
   height: 140px;
   transition: all 0.8s;

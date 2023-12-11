@@ -211,7 +211,7 @@ async function getPhotographers() {
       </div>
       <div class="nmberIcon">
       <p class="paraNumbIcon">${element.likes}</p>
-      <ion-icon class="like" name="heart"></ion-icon>
+      <span><ion-icon class="like" name="heart"></ion-icon></span>
       </div>
       </div>
       </div>
@@ -359,57 +359,90 @@ async function getPhotographers() {
       </div>
   `;
 
-  function navigeWithKeyBoard() {
-    let currentIndex = 0;
-    document.addEventListener("keydown", (event) => {
-      const boxes = section.children;
-      const containers = document.querySelectorAll(".container");
-      switch (event.key) {
-        case "ArrowUp":
-          navigate(-2);
-          break;
-        case "ArrowDown":
-          navigate(2);
-          break;
-        case "ArrowLeft":
-          navigate(-1);
-          break;
-        case "ArrowRight":
-          navigate(1);
-          break;
-        case "Enter":
-          clickAtiveContainer();
-          break;
-      }
-      function navigate(direction) {
-        currentIndex += direction;
-        // Assurez-vous que l'index reste dans les limites des articles
-        currentIndex = Math.max(
-          0,
-          Math.min(currentIndex, containers.length - 1)
-        );
-        //Supprimer toute classe « active » existante
-        containers.forEach((container, index) => {
-          container.classList.remove("active");
-          if (index === currentIndex) {
-            // Ajouter une classe 'active' à l'article actuel
-            container.classList.add("active");
-            // Faire défiler la page pour rendre le conteneur actif visible
-            container.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        });
-      }
-      function clickAtiveContainer() {
-        // Simuler un clic sur l'article actif
-        const activeContainer = containers[currentIndex];
-        if (activeContainer) {
-          const clickimg = activeContainer.children[0].children[0].children[0];
-          clickimg.click();
+  //------------depklacer avec les fleche---------------------
+  let currentIndex = 0;
+  let focusableArray;
+  document.addEventListener("keydown", (event) => {
+    const focusableElements = document.querySelectorAll(
+      "div, h1, h2, h3, p,span,button,input,textarea"
+    );
+    // Filtrer les éléments visibles (display: block)
+    const visibleElements = Array.from(focusableElements).filter(
+      (element) => window.getComputedStyle(element).display !== "none"
+    );
+    focusableArray = visibleElements;
+
+    if (currentIndex === -1) {
+      currentIndex = 0;
+      focusableArray[currentIndex].classList.add("activeOne");
+      focusableArray[currentIndex].focus();
+    }
+    switch (event.key) {
+      case "ArrowLeft":
+        navigate(-1);
+        break;
+      case "ArrowRight":
+        navigate(1);
+        break;
+      case "ArrowUp":
+        navigate(-5);
+        break;
+      case "ArrowDown":
+        navigate(5);
+        break;
+      case "Enter":
+        clickActiveContainer();
+        break;
+    }
+    function navigate(direction) {
+      focusableArray[currentIndex].classList.remove("activeOne");
+
+      currentIndex += direction;
+      currentIndex = Math.max(
+        0,
+        Math.min(currentIndex, focusableArray.length - 1)
+      );
+
+      focusableArray[currentIndex].classList.add("activeOne");
+      focusableArray[currentIndex].focus();
+      focusableArray[currentIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      //--------ouverture du triee-------------
+      const currentElement = focusableArray[currentIndex];
+      const classesList = Array.from(currentElement.classList);
+      classesList.forEach((classe) => {
+        if (classe === "containtTrie") {
+          console.log("yes");
+          containtTrie.classList.toggle("afterclick");
+          chevron_ouvert[0].classList.toggle("rotate");
         }
+      });
+    }
+    function clickActiveContainer() {
+      const elementToClick = focusableArray[currentIndex];
+      if (elementToClick) {
+        //console.log(elementToClick);
+        elementToClick.children[0].click();
       }
-    });
-  }
-  navigeWithKeyBoard();
+    }
+  });
+  // Observer les changements dans le DOM (par exemple, les changements de display)
+  // const observer = new MutationObserver((mutations) => {
+  //   // Mettez à jour la liste des éléments focusables lorsque des mutations sont détectées
+  //   const updatedVisibleElements = Array.from(focusableArray).filter(
+  //     (element) => window.getComputedStyle(element).display !== "none"
+  //   );
+  //   focusableArray = updatedVisibleElements;
+
+  // });
+
+  // // Configuration de l'observateur
+  // const observerConfig = { attributes: true, childList: true, subtree: true };
+
+  // // Commencer l'observation du DOM
+  // observer.observe(document.body, observerConfig);
 }
 
 getPhotographers();

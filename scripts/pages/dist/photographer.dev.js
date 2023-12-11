@@ -27,71 +27,11 @@ var somme = 0;
 var totalLikes = 0;
 
 function getPhotographers() {
-  var response, data, media, displayId, userID, picture, name, city, country, tagline, price, Thelikes, containtTrie, chevron_ouvert, elementTexteClique, ArrayTries, addClickEventListeners, handleItemClick, i, navigeWithKeyBoard;
+  var response, data, media, displayId, userID, picture, name, city, country, tagline, price, Thelikes, containtTrie, chevron_ouvert, elementTexteClique, ArrayTries, addClickEventListeners, handleItemClick, i, currentIndex, focusableArray;
   return regeneratorRuntime.async(function getPhotographers$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          navigeWithKeyBoard = function _ref3() {
-            var currentIndex = 0;
-            document.addEventListener("keydown", function (event) {
-              var boxes = section.children;
-              var containers = document.querySelectorAll(".container");
-
-              switch (event.key) {
-                case "ArrowUp":
-                  navigate(-2);
-                  break;
-
-                case "ArrowDown":
-                  navigate(2);
-                  break;
-
-                case "ArrowLeft":
-                  navigate(-1);
-                  break;
-
-                case "ArrowRight":
-                  navigate(1);
-                  break;
-
-                case "Enter":
-                  clickAtiveContainer();
-                  break;
-              }
-
-              function navigate(direction) {
-                currentIndex += direction; // Assurez-vous que l'index reste dans les limites des articles
-
-                currentIndex = Math.max(0, Math.min(currentIndex, containers.length - 1)); //Supprimer toute classe « active » existante
-
-                containers.forEach(function (container, index) {
-                  container.classList.remove("active");
-
-                  if (index === currentIndex) {
-                    // Ajouter une classe 'active' à l'article actuel
-                    container.classList.add("active"); // Faire défiler la page pour rendre le conteneur actif visible
-
-                    container.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center"
-                    });
-                  }
-                });
-              }
-
-              function clickAtiveContainer() {
-                // Simuler un clic sur l'article actif
-                var activeContainer = containers[currentIndex];
-
-                if (activeContainer) {
-                  var clickimg = activeContainer.children[0].children[0].children[0];
-                  clickimg.click();
-                }
-              }
-            });
-          };
-
           handleItemClick = function _ref2(e, index) {
             // Échangez l'élément cliqué avec celui à l'index 0 dans le tableau ArrayTries
             var clickedItem = ArrayTries[index];
@@ -165,24 +105,24 @@ function getPhotographers() {
             });
           };
 
-          _context.next = 5;
+          _context.next = 4;
           return regeneratorRuntime.awrap(fetch("http://127.0.0.1:5501/data/photographers.json"));
 
-        case 5:
+        case 4:
           response = _context.sent;
 
           if (response.ok) {
-            _context.next = 8;
+            _context.next = 7;
             break;
           }
 
           throw new Error("Erreur lors de la récupération des photographes");
 
-        case 8:
-          _context.next = 10;
+        case 7:
+          _context.next = 9;
           return regeneratorRuntime.awrap(response.json());
 
-        case 10:
+        case 9:
           data = _context.sent;
           media = data.media;
           displayId = []; // Récupérer l'ID depuis le localStorage
@@ -277,7 +217,7 @@ function getPhotographers() {
                   somme += Thelikes[i];
                 }
 
-                section.innerHTML += "\n      <div class=\"container\" data-likes=".concat(element.likes, " data-date=").concat(element.date, ">\n      <div class=\"img_block\">\n      ").concat(imageElement, "\n      ").concat(videoElement, "\n      </div>\n      <div class=\"name_like\">\n      <div class=\"h3\">\n      <h3 class=\"title\">").concat(element.title, "</h3> \n      </div>\n      <div class=\"nmberIcon\">\n      <p class=\"paraNumbIcon\">").concat(element.likes, "</p>\n      <ion-icon class=\"like\" name=\"heart\"></ion-icon>\n      </div>\n      </div>\n      </div>\n      "); //--------------click du like----------------
+                section.innerHTML += "\n      <div class=\"container\" data-likes=".concat(element.likes, " data-date=").concat(element.date, ">\n      <div class=\"img_block\">\n      ").concat(imageElement, "\n      ").concat(videoElement, "\n      </div>\n      <div class=\"name_like\">\n      <div class=\"h3\">\n      <h3 class=\"title\">").concat(element.title, "</h3> \n      </div>\n      <div class=\"nmberIcon\">\n      <p class=\"paraNumbIcon\">").concat(element.likes, "</p>\n      <span><ion-icon class=\"like\" name=\"heart\"></ion-icon></span>\n      </div>\n      </div>\n      </div>\n      "); //--------------click du like----------------
 
                 var _loop2 = function _loop2(_i) {
                   likeIcons[_i].addEventListener("click", function (e) {
@@ -418,8 +358,87 @@ function getPhotographers() {
             somme += Thelikes[i];
           }
 
-          like_priceTotal.innerHTML += "\n  <div class=\"like_total\">\n      <p class=\"likeTotalPara\">".concat(somme, "</p>\n      <ion-icon name=\"heart\"></ion-icon>\n      </div>\n      <div class=\"prise_jour\">\n        <div class=\"prise\">").concat(price, "\xA3/ jour</div>\n      </div>\n  ");
-          navigeWithKeyBoard();
+          like_priceTotal.innerHTML += "\n  <div class=\"like_total\">\n      <p class=\"likeTotalPara\">".concat(somme, "</p>\n      <ion-icon name=\"heart\"></ion-icon>\n      </div>\n      <div class=\"prise_jour\">\n        <div class=\"prise\">").concat(price, "\xA3/ jour</div>\n      </div>\n  "); //------------depklacer avec les fleche---------------------
+
+          currentIndex = 0;
+          document.addEventListener("keydown", function (event) {
+            var focusableElements = document.querySelectorAll("div, h1, h2, h3, p,span,button,input,textarea"); // Filtrer les éléments visibles (display: block)
+
+            var visibleElements = Array.from(focusableElements).filter(function (element) {
+              return window.getComputedStyle(element).display !== "none";
+            });
+            focusableArray = visibleElements;
+
+            if (currentIndex === -1) {
+              currentIndex = 0;
+              focusableArray[currentIndex].classList.add("activeOne");
+              focusableArray[currentIndex].focus();
+            }
+
+            switch (event.key) {
+              case "ArrowLeft":
+                navigate(-1);
+                break;
+
+              case "ArrowRight":
+                navigate(1);
+                break;
+
+              case "ArrowUp":
+                navigate(-5);
+                break;
+
+              case "ArrowDown":
+                navigate(5);
+                break;
+
+              case "Enter":
+                clickActiveContainer();
+                break;
+            }
+
+            function navigate(direction) {
+              focusableArray[currentIndex].classList.remove("activeOne");
+              currentIndex += direction;
+              currentIndex = Math.max(0, Math.min(currentIndex, focusableArray.length - 1));
+              focusableArray[currentIndex].classList.add("activeOne");
+              focusableArray[currentIndex].focus();
+              focusableArray[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+              }); //--------ouverture du triee-------------
+
+              var currentElement = focusableArray[currentIndex];
+              var classesList = Array.from(currentElement.classList);
+              classesList.forEach(function (classe) {
+                if (classe === "containtTrie") {
+                  console.log("yes");
+                  containtTrie.classList.toggle("afterclick");
+                  chevron_ouvert[0].classList.toggle("rotate");
+                }
+              });
+            }
+
+            function clickActiveContainer() {
+              var elementToClick = focusableArray[currentIndex];
+
+              if (elementToClick) {
+                //console.log(elementToClick);
+                elementToClick.children[0].click();
+              }
+            }
+          }); // Observer les changements dans le DOM (par exemple, les changements de display)
+          // const observer = new MutationObserver((mutations) => {
+          //   // Mettez à jour la liste des éléments focusables lorsque des mutations sont détectées
+          //   const updatedVisibleElements = Array.from(focusableArray).filter(
+          //     (element) => window.getComputedStyle(element).display !== "none"
+          //   );
+          //   focusableArray = updatedVisibleElements;
+          // });
+          // // Configuration de l'observateur
+          // const observerConfig = { attributes: true, childList: true, subtree: true };
+          // // Commencer l'observation du DOM
+          // observer.observe(document.body, observerConfig);
 
         case 35:
         case "end":

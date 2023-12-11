@@ -45,53 +45,107 @@ function photographerTemplate(data) {
       pagePhotographer();
     });
     let currentIndex = 0;
-    document.addEventListener("keydown", (event) => {
-      const articles = document.querySelectorAll(".articleContainer");
-      switch (event.key) {
-        case "ArrowUp":
-          navigate(-3);
-          break;
-        case "ArrowDown":
-          navigate(3);
-          break;
-        case "ArrowLeft":
-          navigate(-1);
-          break;
-        case "ArrowRight":
-          navigate(1);
-          break;
-        case "Enter":
-          clickActiveArticle();
-          //console.log(event);
-          break;
-      }
+    // document.addEventListener("keydown", (event) => {
+    //   const articles = document.querySelectorAll(".articleContainer");
+    //   switch (event.key) {
+    //     case "ArrowUp":
+    //       navigate(-3);
+    //       break;
+    //     case "ArrowDown":
+    //       navigate(3);
+    //       break;
+    //     case "ArrowLeft":
+    //       navigate(-1);
+    //       break;
+    //     case "ArrowRight":
+    //       navigate(1);
+    //       break;
+    //     case "Enter":
+    //       clickActiveArticle();
+    //       //console.log(event);
+    //       break;
+    //   }
 
-      function navigate(direction) {
-        currentIndex += direction;
-        // Assurez-vous que l'index reste dans les limites des articles
-        currentIndex = Math.max(0, Math.min(currentIndex, articles.length - 1));
-        //Supprimer toute classe « active » existante
-        articles.forEach((article, index) => {
-          article.classList.remove("active");
-          if (index === currentIndex) {
-            // Ajouter une classe 'active' à l'article actuel
-            article.classList.add("active");
-          }
-        });
-      }
+    //   function navigate(direction) {
+    //     currentIndex += direction;
+    //     // Assurez-vous que l'index reste dans les limites des articles
+    //     currentIndex = Math.max(0, Math.min(currentIndex, articles.length - 1));
+    //     //Supprimer toute classe « active » existante
+    //     articles.forEach((article, index) => {
+    //       article.classList.remove("active");
+    //       if (index === currentIndex) {
+    //         // Ajouter une classe 'active' à l'article actuel
+    //         article.classList.add("active");
+    //       }
+    //     });
+    //   }
 
-      function clickActiveArticle() {
-        // Simuler un clic sur l'article actif
-        const activeArticle = articles[currentIndex];
-        if (activeArticle) {
-          const clickEvenement = activeArticle.children[0];
-          clickEvenement.click();
-        }
-      }
-    });
+    //   function clickActiveArticle() {
+    //     // Simuler un clic sur l'article actif
+    //     const activeArticle = articles[currentIndex];
+    //     if (activeArticle) {
+    //       const clickEvenement = activeArticle.children[0];
+    //       clickEvenement.click();
+    //     }
+    //   }
+    // });
     //pagePhotographer();
+
     return article;
   }
 
   return { name, picture, country, city, tagline, price, id, getUserCardDOM };
 }
+let currentIndex = 0;
+document.addEventListener("keydown", (event) => {
+  const focusableElements = document.querySelectorAll("div, h1, h2, h3, p");
+  const focusableArray = Array.from(focusableElements);
+
+  if (currentIndex === -1) {
+    currentIndex = 0; // Définit sur le premier élément si currentIndex est -1
+    focusableArray[currentIndex].classList.add("active");
+    focusableArray[currentIndex].focus();
+  }
+
+  switch (event.key) {
+      case "ArrowLeft":
+      navigate(-1);
+      break;
+      case "ArrowRight":
+      navigate(1);
+      break;
+      case "ArrowUp":
+      navigate(-5);
+      break;
+    case "ArrowDown":
+      navigate(5);
+      break;
+    case "Enter":
+      clickElement();
+      break;
+  }
+
+  function navigate(direction) {
+    // Supprime la classe 'active' de l'élément actuellement sélectionné
+    focusableArray[currentIndex].classList.remove("activeOne");
+
+    currentIndex += direction;
+    currentIndex = Math.max(
+      0,
+      Math.min(currentIndex, focusableArray.length - 1)
+    );
+
+    // Ajoute la classe 'active' à l'élément actuellement sélectionné
+    focusableArray[currentIndex].classList.add("activeOne");
+
+    // Donne le focus à l'élément actuellement sélectionné
+    focusableArray[currentIndex].focus();
+  }
+  function clickElement() {
+    // Simuler un clic sur l'élément actuellement focalisé
+    const elementToClick = focusableArray[currentIndex];
+    if (elementToClick) {
+      elementToClick.click();
+    }
+  }
+});
